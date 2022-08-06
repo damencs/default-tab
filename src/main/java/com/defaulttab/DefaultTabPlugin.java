@@ -99,7 +99,7 @@ public class DefaultTabPlugin extends Plugin
 		final EnumSet<WorldType> worldType = client.getWorldType();
 
 		// Do not apply action if in the Wilderness OR in a PvP/Deadman World.
-		if (!pushTab || client.getGameState() != GameState.LOGGED_IN || client.getLocalPlayer() == null || client.getVarbitValue(Varbits.IN_WILDERNESS) == 1 || WorldType.isPvpWorld(worldType))
+		if (!pushTab || client.getGameState() != GameState.LOGGED_IN || client.getLocalPlayer() == null || WorldType.isPvpWorld(worldType))
 		{
 			pushTab = false;
 			return;
