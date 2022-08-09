@@ -64,4 +64,15 @@ public interface DefaultTabConfig extends Config
 	{
 		return InterfaceTab.INVENTORY;
 	}
+
+	@ConfigItem(
+			name = "Enable in Wilderness/PvP Worlds",
+			keyName = "enabledInPvP",
+			description = "- Switch to the default tab when in the wilderness and PvP Worlds (3-tick delay)",
+			position = 3
+	)
+	default boolean enabledInPvp()
+	{
+		return false;
+	}
 }

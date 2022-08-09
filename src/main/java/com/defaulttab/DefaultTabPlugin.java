@@ -67,6 +67,8 @@ public class DefaultTabPlugin extends Plugin
 	private static final int TAB_SWITCH_SCRIPT = 915;
 	private boolean pushTab = false;
 
+	private int tickDelay = 0;
+
 	@Override
 	protected void shutDown()
 	{
@@ -76,18 +78,25 @@ public class DefaultTabPlugin extends Plugin
 	@Subscribe
 	private void onGameStateChanged(GameStateChanged e)
 	{
+		if (!config.isOnLoginEnabled() || !config.isOnWorldHop())
+		{
+			return;
+		}
+
 		switch (e.getGameState())
 		{
 			case LOGGING_IN:
 				if (config.isOnLoginEnabled())
 				{
 					pushTab = true;
+					tickDelay = 0;
 				}
 				break;
 			case HOPPING:
 				if (config.isOnWorldHop())
 				{
 					pushTab = true;
+					tickDelay = 0;
 				}
 				break;
 		}
@@ -96,13 +105,26 @@ public class DefaultTabPlugin extends Plugin
 	@Subscribe
 	private void onGameTick(GameTick e)
 	{
-		final EnumSet<WorldType> worldType = client.getWorldType();
-
-		// Do not apply action if in the Wilderness OR in a PvP/Deadman World.
-		if (!pushTab || client.getGameState() != GameState.LOGGED_IN || client.getLocalPlayer() == null || WorldType.isPvpWorld(worldType))
+		if (!pushTab || client.getGameState() != GameState.LOGGED_IN || client.getLocalPlayer() == null)
 		{
 			pushTab = false;
 			return;
+		}
+
+		final EnumSet<WorldType> worldType = client.getWorldType();
+
+		if (client.getVarbitValue(Varbits.IN_WILDERNESS) == 1 || WorldType.isPvpWorld(worldType))
+		{
+			if (!config.enabledInPvp())
+			{
+				return;
+			}
+
+			if (tickDelay != 3)
+			{
+				tickDelay++;
+				return;
+			}
 		}
 
 		clientThread.invokeLater(() ->
