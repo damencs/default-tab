@@ -1,5 +1,5 @@
 # Default Tab
-Sets your open tab to your desired interface. **Please Note:** This is restricted to not function within PvP Worlds and the Wilderness. This presents an unfair advantage in these situations.
+Sets your open tab to your desired interface.
 
 ![](https://github.com/damencs/default-tab/raw/master/readmeimg.png)
 
