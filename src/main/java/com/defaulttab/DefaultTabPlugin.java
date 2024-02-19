@@ -78,7 +78,7 @@ public class DefaultTabPlugin extends Plugin
 	@Subscribe
 	private void onGameStateChanged(GameStateChanged e)
 	{
-		if (!config.isOnLoginEnabled() || !config.isOnWorldHop())
+		if (!config.isOnLoginEnabled() && !config.isOnWorldHop())
 		{
 			return;
 		}
